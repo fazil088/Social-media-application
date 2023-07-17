@@ -62,7 +62,6 @@ const UserWidget = ({userId,picturePath})=>{
                 <FlexBetween gap='1rem'>
                     <Box>
                         <UserImage image={picturePath}/>
-                        <div>hello</div>
                     </Box>
                     <Box>
                         <Typography
