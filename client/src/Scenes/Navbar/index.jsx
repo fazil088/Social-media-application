@@ -54,7 +54,7 @@ function Navbar() {
     const searchUser = async  () => {
       try{
         const response = await fetch(
-          `https://social-media-application-backend.vercel.app/user/${userName}/search`,
+          `http://localhost:3001/user/${userName}/search`,
           {
             method: 'GET',
             headers:{

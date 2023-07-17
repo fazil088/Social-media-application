@@ -65,7 +65,7 @@ function Form() {
     formData.append("picture", values.picture.name);
 
     const savedUserResponse = await fetch(
-      "https://social-media-application-backend.vercel.app/auth/register",
+      "http://localhost:3001/auth/register",
       {
         method: 'POST',
         body: formData
@@ -83,7 +83,7 @@ function Form() {
   const login = async (values, onSubmitProps) => {
     try{
       const loggedInResponse = await fetch(
-        "https://social-media-application-backend.vercel.app/auth/login",
+        "http://localhost:3001/auth/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

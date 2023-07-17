@@ -45,7 +45,7 @@ function PostWidget({
 
     const patchLike = async () => {
       const response = await fetch(
-        `https://social-media-application-backend.vercel.app/posts/${postId}/like`,
+        `http://localhost:3001/posts/${postId}/like`,
         {
           method:"PATCH",
           headers:{ Authorization: `Bearer ${token}`,
@@ -60,7 +60,7 @@ function PostWidget({
 
     const patchComment = async () => {
       const response = await fetch(
-        `https://social-media-application-backend.vercel.app/posts/${postId}/comments`,
+        `http://localhost:3001/posts/${postId}/comments`,
         {
           method:'PATCH',
           headers:{ Authorization: `Bearer ${token}`,
@@ -76,7 +76,7 @@ function PostWidget({
 
     const deletePost = async () => {
       const response = await fetch(
-        `https://social-media-application-backend.vercel.app/posts/${postId}/delete`,
+        `http://localhost:3001/posts/${postId}/delete`,
         {
           method:'DELETE',
           headers: { Authorization: `Bearer ${token}`},
@@ -107,7 +107,7 @@ function PostWidget({
       {
         picturePath && (
           <img 
-            src={`https://social-media-application-backend.vercel.app/assets/${picturePath}`} 
+            src={`http://localhost:3001/assets/${picturePath}`} 
             alt="post" 
             width='100%'
             height='auto'

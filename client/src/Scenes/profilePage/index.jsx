@@ -17,7 +17,7 @@ function ProfilePage() {
 
   const getUser = async () => {
     const response = await fetch(
-      `https://social-media-application-backend.vercel.app/user/${userId}`,
+      `http://localhost:3001/user/${userId}`,
       {
         method: 'GET',
         headers:{ Authorization: `Bearer ${token}`}

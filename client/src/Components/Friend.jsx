@@ -23,7 +23,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, addFriend = true })
 
     const patchFriend = async () => {
         const response = await fetch(
-            `https://social-media-application-backend.vercel.app/user/${_id}/${friendId}`,
+            `http://localhost:3001/user/${_id}/${friendId}`,
             {
                 method:"PATCH",
                 headers:{ Authorization: `Bearer ${token}`,

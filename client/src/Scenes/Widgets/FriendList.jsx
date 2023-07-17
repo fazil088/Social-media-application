@@ -13,7 +13,7 @@ function FriendList({userId}) {
 
     const getFriendList = async () => {
         const response = await fetch(
-            `https://social-media-application-backend.vercel.app/user/${userId}/friends`,
+            `http://localhost:3001/user/${userId}/friends`,
             {
                 method:'GET',
                 headers:{

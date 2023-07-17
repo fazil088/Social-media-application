@@ -11,7 +11,7 @@ function PostsWidget({userId, isProfile = false}) {
 
   const getPosts = async () => {
     const response = await fetch(
-      "https://social-media-application-backend.vercel.app/posts/",
+      "http://localhost:3001/posts/",
       {
         method:'GET',
         headers: { Authorization: `Bearer ${token}`},
@@ -23,7 +23,7 @@ function PostsWidget({userId, isProfile = false}) {
 
   const getUserPost = async () => {
     const response = await fetch(
-      `https://social-media-application-backend.vercel.app/posts/${userId}`,
+      `http://localhost:3001/posts/${userId}`,
       {
         method:'GET',
         headers: { Authorization: `Bearer ${token}`},

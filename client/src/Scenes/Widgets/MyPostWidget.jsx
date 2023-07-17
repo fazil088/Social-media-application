@@ -50,7 +50,7 @@ function MyPostWidget({picturePath}) {
     }
 
     const response = await fetch(
-      `https://social-media-application-backend.vercel.app/posts/`,
+      `http://localhost:3001/posts/`,
       {
         method: 'POST',
         headers: { Authorization : `Bearer ${token}` },
