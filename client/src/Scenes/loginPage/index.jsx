@@ -14,7 +14,7 @@ function LoginPage() {
         textAlign="center"
         backgroundColor= {theme.palette.background.alt}>
         <Typography fontWeight="bold" fontSize="32px" color="primary">
-          BUILD MORE
+          Connect
         </Typography>
       </Box>
       <Box display="flex" justifyContent="center" alignItems="center">
@@ -26,7 +26,7 @@ function LoginPage() {
         borderRadius="1.5rem"
         >
         <Typography variant='h5' fontWeight="500" mb="1.5rem" textAlign="center">
-          Welcome to the BUILD MORE MEDIA !
+          Welcome, connect with us...
         </Typography>
         <Form />
       </Box>

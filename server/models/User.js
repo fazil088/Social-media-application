@@ -32,6 +32,14 @@ const UserSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
+    verificationOTP: {
+        type: String,
+        default: null
+    },
+    expOfOTP:{
+        type: Date,
+        default: null
+    },
     location: String,
     occupation: String,
     profileViews: Number,

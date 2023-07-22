@@ -113,7 +113,7 @@ function Navbar() {
               <FlexBetween
                 backgroundColor={neutralLight}
                 borderRadius="9px"
-                padding="0.1rem 1.5rem" >
+                padding="0.3rem 1.5rem" >
                 <InputBase
                   sx={{width:'200px'}} 
                   placeholder='Search...' 

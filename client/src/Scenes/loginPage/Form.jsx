@@ -28,7 +28,7 @@ const registerSchema = yup.object().shape({
 
 const loginSchema = yup.object().shape({
   email: yup.string().email("Invalid email").required("email required"),
-  password: yup.string().required("password required"),
+  password: yup.string().required("password required")
 });
 
 const initialValuesRegister = {
@@ -53,31 +53,41 @@ function Form() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isMobileScreen = useMediaQuery("(min-width:600px)");
+
   const isLogin = formType === "login";
   const isRegister = formType === "register";
 
   const register = async (values, onSubmitProps) => {
-    // this allow us to send form info with image
-    const formData = new FormData();
-    for (let value in values) {
-      formData.append(value, values[value]);
-    }
-    formData.append("picture", values.picture.name);
-
-    const savedUserResponse = await fetch(
-      "http://localhost:3001/auth/register",
-      {
-        method: 'POST',
-        body: formData
-      }
-    );
-
-    const savedUser = await savedUserResponse.json();
-    onSubmitProps.resetForm();
-
-    if (savedUser) {
-      setFormType('login')
-    }
+   try{
+     // this allow us to send form info with image
+     const formData = new FormData();
+     for (let value in values) {
+       formData.append(value, values[value]);
+     }
+     formData.append("picture", values.picture.name);
+ 
+     const savedUserResponse = await fetch(
+       "http://localhost:3001/auth/register",
+       {
+         method: 'POST',
+         body: formData
+       }
+     );
+     
+     const savedUser = await savedUserResponse.json();
+     if(savedUserResponse.ok){
+       if (savedUser) {
+         setFormType('login')
+       }
+       onSubmitProps.resetForm();
+     }else{
+      const {msg} = savedUser;
+      setErrorMsg(msg)
+     }
+   }catch(err){
+    console.log(err.message)
+    setErrorMsg(err.message)
+   }
   }
 
   const login = async (values, onSubmitProps) => {
@@ -101,7 +111,7 @@ function Form() {
             token: loggedUser.token
           })
         );
-        navigate("/")
+        navigate('/verify-otp')
         onSubmitProps.resetForm();
       }else{
         const {msg} = loggedUser;
@@ -136,6 +146,13 @@ function Form() {
         resetForm,
       }) => (
         <form onSubmit={handleSubmit}>
+          {
+          errorMsg && (
+            <Box width='100%' sx={{gridColumn:'span 4'}}>
+              <Typography textAlign='center' color='red' mb='1.5rem'>{errorMsg}</Typography>
+            </Box>
+            )
+          }
           <Box
             display="grid"
             gap="30px"
@@ -196,7 +213,7 @@ function Form() {
                   gridColumn="span 4"
                   border={`1px solid ${palette.neutral.medium}`}
                   borderRadius="5px"
-                  p="1rem"
+                  p="0.5rem"
                   
                   >
                   <Dropzone
@@ -231,13 +248,6 @@ function Form() {
                 </Box>
               </>
             )}
-            {
-              errorMsg && (
-                <Box width='100%' sx={{gridColumn:'span 4'}}>
-                  <Typography textAlign='center' color='red'>{errorMsg}</Typography>
-                </Box>
-                )
-              }
             <TextField
               label="Email"
               value={values.email}
@@ -280,19 +290,19 @@ function Form() {
                 "Don't have an account ?" :
                 "Already hava an account ?"}
             </Typography>
-            <Button
-              type="submit"
-              sx={{
-                color:palette.primary.dark,
-                backgroundColor:palette.primary.light,
-                width:"200px",
-                m: " 2rem 0",
-                p: "1rem",
-                "&:hover": {
-                  color:palette.primary.main
-                },
-              }}
-            >
+              <Button
+                type="submit"
+                sx={{
+                  color:palette.primary.dark,
+                  backgroundColor:palette.primary.light,
+                  width:"200px",
+                  m: " 2rem 0",
+                  p: "1rem",
+                  "&:hover": {
+                    color:palette.primary.main
+                  },
+                }}
+              >
               {isLogin ? "LOGIN" : "REGISTER"}
             </Button>
           </FlexBetween>
