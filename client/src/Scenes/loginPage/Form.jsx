@@ -5,7 +5,7 @@ import {
   TextField,
   Typography,
   useTheme,
-  useMediaQuery,
+  useMediaQuery
 } from "@mui/material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Formik } from "formik";
@@ -15,6 +15,7 @@ import { setLogin } from "../../State";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import FlexBetween from "../../Components/FlexBetween";
+import ErrorMsg from "../../Components/ErrorMsg";
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("first name required"),
@@ -47,7 +48,7 @@ const initialValuesLogin = {
 };
 
 function Form() {
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState(null);
   const [formType, setFormType] = useState("login");
   const { palette } = useTheme();
   const navigate = useNavigate();
@@ -83,6 +84,7 @@ function Form() {
      }else{
       const {msg} = savedUser;
       setErrorMsg(msg)
+      
      }
    }catch(err){
     console.log(err.message)
@@ -129,6 +131,12 @@ function Form() {
     if(isRegister) await register(values,onSubmitProps)
   }
 
+  if(errorMsg){
+    setTimeout(()=>{
+      setErrorMsg(null)
+    },3000)
+  }
+
   return (
     <Formik
       onSubmit={handleFormSubmit}
@@ -145,13 +153,10 @@ function Form() {
         setFieldValue,
         resetForm,
       }) => (
+          
         <form onSubmit={handleSubmit}>
           {
-          errorMsg && (
-            <Box width='100%' sx={{gridColumn:'span 4'}}>
-              <Typography textAlign='center' color='red' mb='1.5rem'>{errorMsg}</Typography>
-            </Box>
-            )
+            errorMsg && <ErrorMsg message={errorMsg} severity="error"/>
           }
           <Box
             display="grid"

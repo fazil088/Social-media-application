@@ -25,6 +25,7 @@ import {
 import Dropzone from 'react-dropzone';
 import {useDispatch,useSelector} from 'react-redux';
 import { setPosts } from '../../State';
+import ErrorMsg from '../../Components/ErrorMsg';
 
 
 function MyPostWidget({picturePath}) {
@@ -32,6 +33,8 @@ function MyPostWidget({picturePath}) {
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
   const [post, setPost] = useState("");
+  const [errorMsg, setErrorMsg] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
   const dispatch = useDispatch();
   const {palette} = useTheme();
   const {_id} = useSelector((state) => state.user);
@@ -58,13 +61,25 @@ function MyPostWidget({picturePath}) {
       }
     );
     const posts = await response.json();
-    dispatch(setPosts({ posts }));
-    setImage(null);
-    setPost("")
+    if(response.ok){
+      dispatch(setPosts({ posts }));
+      setImage(null);
+      setPost("")
+      setSuccessMsg('Post uploaded successfully')
+    }else{
+      const {msg} = posts;
+      setErrorMsg(msg)
+    }
   }
 
   return (
     <WidgetWrapper  marginTop={isNonMobileScreen ? undefined : '2rem'}>
+      {
+        successMsg && <ErrorMsg message={successMsg} severity='success'/>
+      }
+      {
+        errorMsg && <ErrorMsg message={errorMsg} severity='error'/>
+      }
         <FlexBetween gap='1rem'>
           <UserImage image={picturePath}/>
           <InputBase
