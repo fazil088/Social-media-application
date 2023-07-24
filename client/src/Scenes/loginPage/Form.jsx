@@ -48,7 +48,7 @@ const initialValuesLogin = {
 };
 
 function Form() {
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [errorMsg, setErrorMsg] = useState('');
   const [formType, setFormType] = useState("login");
   const { palette } = useTheme();
   const navigate = useNavigate();
@@ -84,7 +84,6 @@ function Form() {
      }else{
       const {msg} = savedUser;
       setErrorMsg(msg)
-      
      }
    }catch(err){
     console.log(err.message)

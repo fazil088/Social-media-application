@@ -6,9 +6,11 @@ import {
 } from '@mui/material';
 import {useSelector} from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import ErrorMsg from '../../Components/ErrorMsg'
 
 function OTP() {
-  const [otp, setOtp] = useState(null)
+  const [otp, setOtp] = useState(null);
+  const [errMsg, setErrMsg] = useState('');
   const navigate = useNavigate();
   const user = useSelector(state=>state.user)
 
@@ -28,33 +30,39 @@ function OTP() {
         navigate('/')
       }else{
         const {msg} = returnRespose;
-        console.log(msg)
+        setErrMsg(msg)
       }
 
     }catch(err){
       console.log(err.message)
+      setErrMsg(err.message)
     }
   }
  
   return (
-    <Box
-      width='100%' height='80vh'
-      display='flex' justifyContent='center' 
-      alignItems='center' flexDirection='column'
-      gap='2rem'
-    >
-        <TextField
-          label="Enter OTP"
-          name='otp'
-          onChange={(e)=>setOtp(e.target.value)}
-          sx={{width:'350px'}}
-        />
-        <Button
-          onClick={handleSubmit}
-          type='submit'
-          sx={{p:'0.5rem 2rem'}}
-        >VERIFY</Button>
-    </Box>
+    <>
+    {
+      errMsg && <ErrorMsg message={errMsg} severity='error'/>
+    }
+      <Box
+        width='100%' height='80vh'
+        display='flex' justifyContent='center' 
+        alignItems='center' flexDirection='column'
+        gap='2rem'
+      >
+          <TextField
+            label="Enter OTP"
+            name='otp'
+            onChange={(e)=>setOtp(e.target.value)}
+            sx={{width:'350px'}}
+          />
+          <Button
+            onClick={handleSubmit}
+            type='submit'
+            sx={{p:'0.5rem 2rem'}}
+          >VERIFY</Button>
+      </Box>
+    </>
   )
 }
 

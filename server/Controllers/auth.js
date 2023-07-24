@@ -89,10 +89,9 @@ export const register = async (req,res)=>{
 
 
         const savedUser = await newUser.save();
-        res.status(201).json(savedUser)
+        res.status(201).json({savedUser,msg:'Registered successfully'})
     }catch(err){
         res.status(500).json({error:err.message})
-        console.log('Error is:',err)
     }
 }
 
@@ -123,7 +122,7 @@ export const login = async (req,res) => {
         delete user.password;
 
         await user.save()
-        res.status(201).json({token,user})
+        res.status(201).json({token,user,msg:'OTP sended successfully'})
     }catch(err){
         res.status(500).json({msg:err.message})
         console.log("Error is :",err.message)

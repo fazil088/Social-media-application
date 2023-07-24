@@ -1,4 +1,4 @@
-import React,{ useState, useEffect } from 'react';
+import React,{ useState } from 'react';
 import { Box, Stack, Alert, useMediaQuery } from '@mui/material';
 
 function ErrorMsg({ message, severity }) {
@@ -16,6 +16,7 @@ function ErrorMsg({ message, severity }) {
         position='absolute' 
         bottom='20px' 
         right={isAlertBox ? '10px' : '-100%'}
+        zIndex='9'
         sx={{
             transition: 'all 0.5s ease-in-out'
         }}
