@@ -57,7 +57,7 @@ function ProfilePage() {
           }
         }}
         >
-          <UserWidget userId={userId} picturePath={user.picturePath} />
+          <UserWidget userId={userId} picturePath={user.picturePath} isProfile />
           <Box m='2rem 0'/>
           <FriendList userId={userId}/>
         </Box>

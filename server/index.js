@@ -14,6 +14,7 @@ import postRoutes from './routes/post.js';
 import verifyToken from './middleware/auth.js';
 import {register} from './Controllers/auth.js';
 import {createPost} from './Controllers/post.js';
+import {changeProfile} from './Controllers/user.js';
 
 
 // MIDDILEWARE CONFIGURATIONS
@@ -48,7 +49,8 @@ app.get('/',(req, res)=>{
 
 // ROUTES WITH FILES
 app.post("/auth/register", upload.single("picture"), register);
-app.post("/posts", upload.single("picture"), verifyToken, createPost)
+app.post("/posts", upload.single("picture"), verifyToken, createPost);
+app.post("/user/profile_change", upload.single("picture"), verifyToken, changeProfile)
   
 // ROUTES
 app.use("/auth", authRoutes);

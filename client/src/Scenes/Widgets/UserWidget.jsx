@@ -2,20 +2,29 @@ import {
     ManageAccountsOutlined,
     EditOutlined,
     LocationOnOutlined,
-    WorkOutlineOutlined
+    WorkOutlineOutlined,
+    CameraAltOutlined
 } from '@mui/icons-material';
-import { Box,Typography,useTheme,Divider } from '@mui/material';
+import { Box,Typography,useTheme,Divider, Button } from '@mui/material';
 import UserImage from '../../Components/UserImage';
 import FlexBetween from '../../Components/FlexBetween';
 import WidgetWrapper from '../../Components/WidgetWrapper';
-import {useSelector} from 'react-redux';
+import './Style.css';
+import ErrorMsg from '../../Components/ErrorMsg';
+import {useSelector,useDispatch} from 'react-redux';
 import { useState,useEffect } from 'react';
 import {useNavigate} from 'react-router-dom';
+import { setProfileImage, setPost } from '../../State';
 
-const UserWidget = ({userId,picturePath})=>{
+const UserWidget = ({userId,picturePath,isProfile=false})=>{
     const [user, setUser] = useState(null);
+    const [changeImg, setChangeImg] = useState(null);
+    const [successMsg, setSuccessMsg] = useState('');
+    const [errMsg, setErrMsg] = useState('');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const token = useSelector((state)=> state.token);
+    const loggedUser = useSelector((state) => state.user._id)
     const {palette} = useTheme();
     const dark = palette.neutral.dark;
     const medium = palette.neutral.medium;
@@ -31,6 +40,42 @@ const UserWidget = ({userId,picturePath})=>{
         );
         const data = await response.json();
         setUser(data);
+    }
+
+    const handleImageChange = async () => {
+        try{
+            const formData = new FormData();
+            formData.append("userId", userId);
+            formData.append("picture", changeImg);
+            formData.append("picturePath", changeImg.name)
+
+            const response = await fetch(
+                `http://localhost:3001/user/profile_change`,
+                {
+                    method:"POST",
+                    headers:{
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body:formData
+                },
+            );
+            const responseData = await response.json();
+            if(response.ok){
+                const {msg} = responseData;
+                setSuccessMsg(msg)
+                const { user } = responseData;
+                dispatch(setProfileImage({ picturePath: user.picturePath}));
+                const { posts } = responseData;
+                dispatch(setPost({post:posts}));
+                navigate('/')
+            }else{
+                const {msg} = responseData;
+                setErrMsg(msg);
+            }
+        }catch(err){
+            console.log(err.message);
+            setErrMsg(err.message);
+        }
     }
 
     useEffect(()=>{
@@ -54,20 +99,49 @@ const UserWidget = ({userId,picturePath})=>{
     return (
         <WidgetWrapper>
             {/* First Row */}
+            {
+                errMsg && <ErrorMsg message={errMsg} severity='error'/>
+            }
+            {
+                successMsg && <ErrorMsg message={successMsg} severity='success'/>
+            }
             <FlexBetween 
                 gap="0.5rem"
                 pb="1.1rem"
-                onClick={() => navigate(`/profile/${userId}`)}
             >
                 <FlexBetween gap='1rem'>
-                    <Box>
+                    <Box position='relative' width='60px' height='60px'>
                         <UserImage image={picturePath}/>
+                        {
+                            userId === loggedUser && isProfile &&
+                            <Box 
+                            position='absolute'
+                            width='25px'
+                            height='25px'
+                            bottom='-5px'
+                            right='-8px'
+                            overflow='hidden'
+                            textAlign='center'
+                            borderRadius='50%'
+                            fontSize='0.9rem'
+                        >
+                            <input type="file" onChange={(e)=>setChangeImg(e.target.files[0])} 
+                                style={{
+                                    position:'absolute',
+                                    transform: 'scale(2)',
+                                    opacity:'0'
+                                }}
+                            />
+                            <CameraAltOutlined/>
+                        </Box>
+                        }
                     </Box>
                     <Box>
                         <Typography
                             variant='h5'
                             fontWeight='500'
                             color={dark} 
+                            onClick={() => navigate(`/profile/${userId}`)}
                             sx={{
                                 "&:hover":{
                                     cursor:'pointer',
@@ -82,6 +156,20 @@ const UserWidget = ({userId,picturePath})=>{
                 </FlexBetween>
                 <ManageAccountsOutlined sx={{fontSize:'25px'}}/>
             </FlexBetween>
+            {
+                changeImg && (
+                    <Button variant='outlined'
+                        sx={{
+                            width:'100%',
+                            mb:'1rem'
+                        }}
+                        onClick={()=>{
+                            setChangeImg(null)
+                            handleImageChange()
+                        }}
+                    >update</Button>
+                )
+            }
             <Divider/>
 
             {/* SECOND ROW */}

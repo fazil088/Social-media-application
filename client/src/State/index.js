@@ -22,6 +22,9 @@ export const authSlice = createSlice({
             state.user = null;
             state.token = null;
         },
+        setProfileImage: (state, action) => {
+            state.user.picturePath = action.payload.picturePath;
+        },
         setFriends: (state, action) => {
             if (state.user) {
                 state.user.friends = action.payload.friends;
@@ -42,5 +45,5 @@ export const authSlice = createSlice({
     }
 })
 
-export const { setMode, setLogin, setLogout, setFriends, setPosts, setPost } = authSlice.actions;
+export const { setMode, setLogin, setLogout, setProfileImage, setFriends, setPosts, setPost } = authSlice.actions;
 export default authSlice.reducer;

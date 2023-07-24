@@ -83,7 +83,6 @@ export const CommentsPosts = async (req, res) => {
         const {userId, comment} = req.body;
         const post = await Post.findById(id);
         const user = await User.findById(userId);
-        console.log(user)
         const userName = user.firstName + ' ' + user.lastName;
         const userProfileId = user._id;
 

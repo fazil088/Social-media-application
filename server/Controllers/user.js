@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import Post from "../models/Post.js";
 
 
 // READ
@@ -84,5 +85,30 @@ export const addRemoveFriend = async (req, res) => {
             
     } catch(err){
         res.status(404).json({msg:err.message});
+    }
+}
+
+export const changeProfile = async (req, res) => {
+    try{
+        const { userId, picturePath } = req.body;
+
+        const user = await User.findById(userId);
+
+        if(!user) return res.status(404).json({msg:'User not found'});
+
+        user.picturePath = picturePath;
+
+        await user.save();
+
+        const posts = await Post.find({userId:userId});
+
+        for(const post of posts){
+            post.userPicturePath = picturePath;
+            await post.save();
+        }
+        
+        res.status(201).json({ user, posts, msg:'Successfully updated' });
+    }catch(err){
+        res.status(409).json({msg:'Failed to change'})
     }
 }
