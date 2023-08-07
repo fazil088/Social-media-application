@@ -12,8 +12,9 @@ import { Box,Divider,Typography,IconButton,useTheme, InputBase, Popover } from '
 import FlexBetween from '../../Components/FlexBetween';
 import Friend from '../../Components/Friend';
 import WidgetWrapper from '../../Components/WidgetWrapper';
+import ErrorMsg from '../../Components/ErrorMsg';
 import { useDispatch,useSelector } from 'react-redux';
-import { setPost } from '../../State';
+import { setPost, setPosts } from '../../State';
 import { useNavigate } from 'react-router-dom';
 import { pink } from '@mui/material/colors';
 
@@ -29,6 +30,8 @@ function PostWidget({
   likes,
   comments }) {
 
+    const [successMsg, setSuccessMsg] = useState('');
+    const [errorMsg, setErrorMsg] = useState('');
     const [isComments, setIsComments] = useState(false);
     const [comment , setComment] = useState("");
     const dispatch = useDispatch();
@@ -75,26 +78,35 @@ function PostWidget({
     }
 
     const deletePost = async () => {
-      const response = await fetch(
-        `http://localhost:3001/posts/${postId}/delete`,
-        {
-          method:'DELETE',
-          headers: { Authorization: `Bearer ${token}`},
-          "Content-Type": "application/json"
+      try{
+        const response = await fetch(
+          `http://localhost:3001/posts/${postId}/delete`,
+          {
+            method:'DELETE',
+            headers: { Authorization: `Bearer ${token}`},
+            "Content-Type": "application/json"
+          }
+        );
+        const data = await response.json();
+        if(response.ok){
+          setSuccessMsg(data.msg)
+          dispatch(setPosts({posts:data.posts}));
+        }else{
+          setErrorMsg(data.msg)
         }
-      );
-      if(response.ok){
-        const {msg} = await response.json();
-        console.log(msg)
-        window.location.reload();
-      }else{
-        const {msg} = await response.json();
-        alert(msg)
+      }catch(err){
+        setErrorMsg(err.msg)
       }
     }
   
   return (
     <WidgetWrapper m='1rem 0'>
+      {
+        successMsg && <ErrorMsg message={successMsg} severity='success'/>
+      }
+      {
+        errorMsg && <ErrorMsg message={errorMsg} severity='error'/>
+      }
       <Friend
         friendId={postUserId}
         name={name}

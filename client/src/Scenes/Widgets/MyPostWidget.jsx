@@ -152,10 +152,10 @@ function MyPostWidget({picturePath}) {
             color={mediumMain}
             sx={{"&:hover":{cursor:'pointer',color:medium}}}
           >
-            Image
+            Select Image
           </Typography>
         </FlexBetween>
-        {
+        {/* {
           isNonMobileScreen ? (
             <>
             <FlexBetween gap='0.25rem'>
@@ -178,7 +178,7 @@ function MyPostWidget({picturePath}) {
               <MoreHorizOutlined sx={{color:mediumMain}}/>
             </FlexBetween>
           )
-        }
+        } */}
 
         <Button
           disabled={!post}
@@ -187,6 +187,7 @@ function MyPostWidget({picturePath}) {
             setIsImage(!isImage);
           }}
           sx={{
+            p:'0.5rem 2rem',
             borderRadius:'3rem',
             backgroundColor:palette.primary.main,
             color:palette.primary.light,

@@ -301,12 +301,12 @@ function Navbar() {
               justifyContent="center"
               alignItems="center"
               gap="3rem"
+              mt='1rem'
             >
-              <IconButton onClick={()=>{
-                navigate('/')
-                }
-                }>
-                  <HomeOutlined sx={{fontSize:'25px'}} />
+              <IconButton 
+                onClick={()=>{ navigate('/') }}
+              >
+                  <HomeOutlined sx={{fontSize:'25px'}} /> 
               </IconButton>
               <IconButton onClick={()=>dispatch(setMode())}>
               {

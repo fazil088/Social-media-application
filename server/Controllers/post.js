@@ -1,6 +1,5 @@
 import Post from "../models/Post.js";
 import User from "../models/User.js";
-import fs from "fs-extra";
 
 // CREATE
 
@@ -106,20 +105,16 @@ export const CommentsPosts = async (req, res) => {
 export const deletePost = async (req, res) => {
     try{
         const {id} = req.params;
-        const post = await Post.findById(id);
-        const postImagePath = post.picturePath;
-        const userProfile = post.userPicturePath;
-
-        if(postImagePath !== userProfile){
-            await fs.unlink(`public/assets/${postImagePath}`)
-        }
 
         const deletedPost = await Post.findByIdAndDelete(id);
 
         if(!deletedPost){
             res.status(404).json({msg:"Post not found"});
         }
-        res.status(200).json({msg:"Successfully deleted."})
+
+        const posts = await Post.find();
+
+        res.status(200).json({msg:"Successfully deleted.", posts:posts})
 
     }catch(err){
         console.error("Post Deleting Error:",err.message)
