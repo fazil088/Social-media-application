@@ -119,7 +119,7 @@ function PostWidget({
       {
         picturePath && (
           <img 
-            src={`http://localhost:3001/assets/${picturePath}`} 
+            src={`http://localhost:3001/Post-Pictures/${picturePath}`} 
             alt="post" 
             width='100%'
             height='auto'

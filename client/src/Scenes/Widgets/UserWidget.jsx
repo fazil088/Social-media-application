@@ -111,7 +111,7 @@ const UserWidget = ({userId,picturePath,isProfile=false})=>{
             >
                 <FlexBetween gap='1rem'>
                     <Box position='relative' width='60px' height='60px'>
-                        <UserImage image={picturePath}/>
+                        <UserImage profilePicture={picturePath}/>
                         {
                             userId === loggedUser && isProfile &&
                             <Box 

@@ -29,28 +29,39 @@ app.use(crossOriginResourcePolicy({policy: "cross-origin"}));
 app.use(morgan("common"));
 app.use(bodyParser.json({limit: "30mb", extended: true}));
 app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
-app.use("/assets", express.static(path.join(__dirname, "public/assets")));
+app.use("/Profile-Pictures", express.static(path.join(__dirname, "public/Profile-Pictures")));
+app.use("/Post-Pictures", express.static(path.join(__dirname, "public/Post-Pictures")));
 app.use(cors());
 
 // FILE STORAGE
-const storage = multer.diskStorage({
+const postPictures = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "public/assets")
+        cb(null, "public/Post-Pictures")
+    },
+    filename: function (req, file, cb) {
+        const postName = new Date().getTime() + file.originalname;
+        req.postName = postName;
+        cb(null, postName)
+    }
+})
+
+const profilePictures = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "public/Profile-Pictures")
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname)
     }
 })
-const upload = multer({storage});
 
-app.get('/',(req, res)=>{
-    res.status(200).json({message:'Welcome the vercel'})
-})
+const postPicturesUpload = multer({storage:postPictures});
+const profilePicturesUpload = multer({storage:profilePictures});
+
 
 // ROUTES WITH FILES
-app.post("/auth/register", upload.single("picture"), register);
-app.post("/posts", upload.single("picture"), verifyToken, createPost);
-app.post("/user/profile_change", upload.single("picture"), verifyToken, changeProfile)
+app.post("/auth/register", profilePicturesUpload.single("picture"), register);
+app.post("/posts", postPicturesUpload.single("picture"), verifyToken, createPost);
+app.post("/user/profile_change", profilePicturesUpload.single("picture"), verifyToken, changeProfile)
   
 // ROUTES
 app.use("/auth", authRoutes);

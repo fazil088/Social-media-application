@@ -1,11 +1,12 @@
 import Post from "../models/Post.js";
 import User from "../models/User.js";
+import fs from 'fs-extra';
 
 // CREATE
 
 export const createPost = async (req,res) => {
     try{
-        const { userId, description, picturePath} = req.body;
+        const { userId, description} = req.body;
         const user = await User.findById(userId);
         const newPost = new Post(
             {
@@ -15,7 +16,7 @@ export const createPost = async (req,res) => {
                 location:user.location,
                 description,
                 userPicturePath:user.picturePath,
-                picturePath,
+                picturePath: req.postName,
                 likes:{},
                 comments:[]
             }
@@ -105,6 +106,11 @@ export const CommentsPosts = async (req, res) => {
 export const deletePost = async (req, res) => {
     try{
         const {id} = req.params;
+
+        const post = await Post.findById(id);
+        if(post){
+            await fs.unlink(`public/Post-Pictures/${post.picturePath}`)
+        }
 
         const deletedPost = await Post.findByIdAndDelete(id);
 

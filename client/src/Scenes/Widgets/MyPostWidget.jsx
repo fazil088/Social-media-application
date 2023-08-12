@@ -6,11 +6,7 @@ import FlexBetween from '../../Components/FlexBetween'
 import {
   EditOutlined,
   DeleteOutlined,
-  AttachFileOutlined,
   ImageOutlined,
-  MoreHorizOutlined,
-  MicOutlined,
-  GifBoxOutlined
 } from '@mui/icons-material';
 import { 
   Box,
@@ -81,7 +77,7 @@ function MyPostWidget({picturePath}) {
         errorMsg && <ErrorMsg message={errorMsg} severity='error'/>
       }
         <FlexBetween gap='1rem'>
-          <UserImage image={picturePath}/>
+          <UserImage profilePicture={picturePath}/>
           <InputBase
             fullWidth
             placeholder="What's on your mind..."
