@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
-import Form from './Form';
+import RegisterForm from './RegisterForm';
 
 function LoginPage() {
   const theme = useTheme();
@@ -28,7 +28,7 @@ function LoginPage() {
         <Typography variant='h5' fontWeight="500" mb="1.5rem" textAlign="center">
           Welcome, connect with us...
         </Typography>
-        <Form />
+        <RegisterForm />
       </Box>
       </Box>
     </Box>

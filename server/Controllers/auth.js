@@ -54,12 +54,13 @@ const sendOTP = async (email, OTP, name) => {
 
 export const register = async (req,res)=>{
     try{
+        console.log(req.body)
         const {
             firstName,
             lastName,
             email,
             password,
-            picture,
+            picturePath,
             friends,
             location,
             occupation
@@ -72,19 +73,28 @@ export const register = async (req,res)=>{
         
         // password bcrypt
         const salt = await bcrypt.genSalt();
-        const passwordHash = await bcrypt.hash(password,salt)
+        const passwordHash = await bcrypt.hash(password,salt);
+
+        // generate OTP and send to the email
+        const otp = Math.floor(100000 + Math.random()*900000);
+        const otpTime = new Date().getTime() + 5 * 60 * 1000;
+        
+        // send the OTP in email
+        sendOTP(email,otp,firstName + lastName);
 
         const newUser = new User({
             firstName,
             lastName,
             email,
             password:passwordHash,
-            picturePath:picture,
+            picturePath:picturePath,
             location,
             occupation,
             friends,
             profileViews:Math.floor(Math.random()* 1000),
-            impressions:Math.floor(Math.random()*1000)
+            impressions:Math.floor(Math.random()*1000),
+            verificationOTP:otp,
+            expOfOTP:otpTime
         })
 
 
@@ -97,7 +107,8 @@ export const register = async (req,res)=>{
 
 export const login = async (req,res) => {
     try{
-        const {email,password } = req.body;
+        console.log(req.body)
+        const {email,password,otp } = req.body;
 
         // Find user 
         const user = await User.findOne({email:email});
@@ -107,45 +118,24 @@ export const login = async (req,res) => {
         const isMatch = await bcrypt.compare(password,user.password);
         if(!isMatch) return res.status(500).json({msg:"Invalid credentials"})
 
-        // generate OTP and send to the email
-        const otp = Math.floor(100000 + Math.random()*900000);
-        const otpTime = new Date().getTime() + 5 * 60 * 1000;
-        
-        // send the OTP in email
-        sendOTP(email,otp,user.firstName + user.lastName)
-
-        user.verificationOTP = otp;
-        user.expOfOTP = otpTime;
-
         // Token will be adding
         const token = jwt.sign({ id:user._id }, process.env.JWT_SECRET);
         delete user.password;
 
+        if(otp){
+            if(new Date().getTime() > user.expOfOTP){
+                return res.status(400).json({msg:'OTP has expired, Please login again :('})
+            }
+    
+            if(user.verificationOTP !== otp){
+                return res.status(401).json({msg:'Invalid OTP :('})
+            }
+        }
+
         await user.save()
-        res.status(201).json({token,user,msg:'OTP sended successfully'})
+        res.status(201).json({token,user,msg:'Successfully Logged'})
     }catch(err){
         res.status(500).json({msg:err.message})
         console.log("Error is :",err.message)
-    }
-}
-
-export const verifyOTP = async (req, res) =>{
-    try{
-        const { otp, email} = req.body;
-
-        const user = await User.findOne({email: email})
-        if(!user) return res.status(404).json({msg:"User not found"})
-
-        if(new Date().getTime() > user.expOfOTP){
-            return res.status(400).json({msg:'OTP has expired, Please login again :('})
-        }
-
-        if(user.verificationOTP !== otp){
-            return res.status(401).json({msg:'Invalid OTP :('})
-        }
-
-        res.status(200).json({msg:'Verification Successfull'})
-    }catch(err){
-        res.status(500).json(err.message)
     }
 }
