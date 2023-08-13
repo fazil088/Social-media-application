@@ -19,9 +19,9 @@ import {
   Button
 } from '@mui/material';
 import Dropzone from 'react-dropzone';
+import { toast } from 'react-toastify';
 import {useDispatch,useSelector} from 'react-redux';
 import { setPosts } from '../../State';
-import ErrorMsg from '../../Components/ErrorMsg';
 
 
 function MyPostWidget({picturePath}) {
@@ -29,8 +29,6 @@ function MyPostWidget({picturePath}) {
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
   const [post, setPost] = useState("");
-  const [errorMsg, setErrorMsg] = useState('');
-  const [successMsg, setSuccessMsg] = useState('');
   const dispatch = useDispatch();
   const {palette} = useTheme();
   const {_id} = useSelector((state) => state.user);
@@ -40,42 +38,42 @@ function MyPostWidget({picturePath}) {
   const isNonMobileScreen = useMediaQuery("(min-width:1000px)");
 
   const handlePost = async () => {
-    const formData = new FormData();
-    formData.append("userId", _id);
-    formData.append("description", post );
-    if(image){
-      formData.append("picture", image);
-      formData.append("picturePath", image.name);
-    }
-
-    const response = await fetch(
-      `http://localhost:3001/posts/`,
-      {
-        method: 'POST',
-        headers: { Authorization : `Bearer ${token}` },
-        body: formData,
+    try{
+      const formData = new FormData();
+      formData.append("userId", _id);
+      formData.append("description", post );
+      if(image){
+        formData.append("picture", image);
+        formData.append("picturePath", image.name);
       }
-    );
-    const posts = await response.json();
-    if(response.ok){
-      dispatch(setPosts({ posts }));
-      setImage(null);
-      setPost("")
-      setSuccessMsg('Post uploaded successfully')
-    }else{
-      const {msg} = posts;
-      setErrorMsg(msg)
+
+      const response = await fetch(
+        `http://localhost:3001/posts/`,
+        {
+          method: 'POST',
+          headers: { Authorization : `Bearer ${token}` },
+          body: formData,
+        }
+      );
+      const posts = await response.json();
+      if(response.ok){
+        dispatch(setPosts({ posts }));
+        setImage(null);
+        setPost("")
+        toast.success("Posted successfully")
+      }else{
+        const {msg} = posts;
+        toast(msg)
+      }
+    }catch(err){
+      console.log(err.message)
+      toast.error('Posting failed')
     }
   }
 
   return (
     <WidgetWrapper  marginTop={isNonMobileScreen ? undefined : '2rem'}>
-      {
-        successMsg && <ErrorMsg message={successMsg} severity='success'/>
-      }
-      {
-        errorMsg && <ErrorMsg message={errorMsg} severity='error'/>
-      }
+        
         <FlexBetween gap='1rem'>
           <UserImage profilePicture={picturePath}/>
           <InputBase

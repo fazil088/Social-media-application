@@ -7,6 +7,8 @@ import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { themeSettings } from './theme';
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -25,6 +27,18 @@ function App() {
             <Route path='/profile/:userId' element={isAuth ? <ProfilePage/> : <Navigate to="/login"/>} />
           </Routes>
         </ThemeProvider>
+        <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        />
       </BrowserRouter>
     </div>
   );

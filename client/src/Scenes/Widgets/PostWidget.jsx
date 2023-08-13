@@ -12,11 +12,11 @@ import { Box,Divider,Typography,IconButton,useTheme, InputBase, Popover } from '
 import FlexBetween from '../../Components/FlexBetween';
 import Friend from '../../Components/Friend';
 import WidgetWrapper from '../../Components/WidgetWrapper';
-import ErrorMsg from '../../Components/ErrorMsg';
 import { useDispatch,useSelector } from 'react-redux';
 import { setPost, setPosts } from '../../State';
 import { useNavigate } from 'react-router-dom';
 import { pink } from '@mui/material/colors';
+import { toast } from 'react-toastify';
 
 
 function PostWidget({
@@ -29,9 +29,6 @@ function PostWidget({
   userPicturePath,
   likes,
   comments }) {
-
-    const [successMsg, setSuccessMsg] = useState('');
-    const [errorMsg, setErrorMsg] = useState('');
     const [isComments, setIsComments] = useState(false);
     const [comment , setComment] = useState("");
     const dispatch = useDispatch();
@@ -89,24 +86,18 @@ function PostWidget({
         );
         const data = await response.json();
         if(response.ok){
-          setSuccessMsg(data.msg)
           dispatch(setPosts({posts:data.posts}));
+          toast.success(data.msg)
         }else{
-          setErrorMsg(data.msg)
+          toast.error(data.msg)
         }
       }catch(err){
-        setErrorMsg(err.msg)
+        toast.error(err.msg)
       }
     }
   
   return (
     <WidgetWrapper m='1rem 0'>
-      {
-        successMsg && <ErrorMsg message={successMsg} severity='success'/>
-      }
-      {
-        errorMsg && <ErrorMsg message={errorMsg} severity='error'/>
-      }
       <Friend
         friendId={postUserId}
         name={name}

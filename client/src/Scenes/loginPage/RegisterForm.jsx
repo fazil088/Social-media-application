@@ -7,15 +7,16 @@ import {
   Typography,
   useTheme
  } from '@mui/material';
- import {setLogin, setRegister} from '../../State'
+ import {toast} from 'react-toastify';
+ import {setLogin} from '../../State'
  import {useNavigate} from 'react-router-dom';
- import {useDispatch,useSelector} from 'react-redux'
+ import {useDispatch} from 'react-redux'
  import FlexBetween from '../../Components/FlexBetween';
-//  import {}
 
 function RegisterForm() {
   const isMobileScreen = useMediaQuery("(min-width:600px)");
 
+  const [isOTP, setIsOTP] = useState(false)
   const [formType, setFormType] = useState("login")
   const isLogin = formType === "login";
   const isRegister = formType === "register";
@@ -23,7 +24,6 @@ function RegisterForm() {
   const {palette} = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isOTP = useSelector((state) => state.register)
 
   // Input values
   const [firstname, setFirstName] = useState('');
@@ -55,17 +55,21 @@ function RegisterForm() {
         }
       )
       const data = await response.json();
-      console.log(data)
       if(response.ok){
         if(data){
-          dispatch(setRegister(true))
+          setIsOTP(true)
           setFormType("login")
         }
         setEmail('')
         setPassword('')
+        toast.success('Registered successfully')
+      }else{
+        const {msg} = data;
+        toast.error(msg)
       }
     }catch(err){
       console.log(err.message)
+      toast.error("Registration Failed")
     }
   }
 
@@ -82,7 +86,6 @@ function RegisterForm() {
         }
       )
       const data = await response.json();
-      console.log(data)
       if(response.ok){
         dispatch(
           setLogin({
@@ -90,11 +93,16 @@ function RegisterForm() {
             token: data.token
           })
         );
-        dispatch(setRegister(false))
+        setIsOTP(false)
         navigate('/')
+        toast.success('Logged successfully')
+      }else{
+        const {msg} = data;
+        toast.error(msg)
       }
     }catch(err){
       console.log(err.message)
+      toast.error("Login Failed")
     }
   }
   return (
@@ -119,6 +127,7 @@ function RegisterForm() {
               onChange={(e)=>{
                 setFirstName(e.target.value)
               }}
+              required="First Name is required"
               />
               <TextField
               sx={{ gridColumn:'span 2' }}
@@ -128,6 +137,7 @@ function RegisterForm() {
               onChange={(e)=>{
                 setLastName(e.target.value)
               }}
+              required="Last Name is required"
               />
               <TextField
               sx={{ gridColumn:'span 4' }}
@@ -137,6 +147,7 @@ function RegisterForm() {
               onChange={(e)=>{
                 setLocation(e.target.value)
               }}
+              required="Location is required"
               />
               <TextField
               sx={{ gridColumn:'span 4' }}
@@ -146,6 +157,7 @@ function RegisterForm() {
               onChange={(e)=>{
                 setOccupation(e.target.value)
               }}
+              required="Occupation is required"
               />
               <Box
               sx={{ gridColumn:"span 4" }}
@@ -154,6 +166,7 @@ function RegisterForm() {
                   onChange={(e)=>{
                     setPicture(e.target.files[0])
                   }}
+                  required
                 />
               </Box>
             </>
@@ -167,6 +180,7 @@ function RegisterForm() {
         onChange={(e)=>{
           setEmail(e.target.value)
         }}
+        required="Email Name is required"
         />
         <TextField
         sx={{ gridColumn:'span 4' }}
@@ -177,6 +191,7 @@ function RegisterForm() {
         onChange={(e)=>{
           setPassword(e.target.value)
         }}
+        required="Password Name is required"
         />
         {
           isOTP && (
@@ -188,6 +203,7 @@ function RegisterForm() {
             onChange={(e)=>{
               setOtp(e.target.value)
             }}
+            required="OTP is required"
             />
           )
         }

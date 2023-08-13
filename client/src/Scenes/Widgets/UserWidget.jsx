@@ -10,17 +10,15 @@ import UserImage from '../../Components/UserImage';
 import FlexBetween from '../../Components/FlexBetween';
 import WidgetWrapper from '../../Components/WidgetWrapper';
 import './Style.css';
-import ErrorMsg from '../../Components/ErrorMsg';
 import {useSelector,useDispatch} from 'react-redux';
 import { useState,useEffect } from 'react';
 import {useNavigate} from 'react-router-dom';
 import { setProfileImage, setPost } from '../../State';
+import { toast } from 'react-toastify';
 
 const UserWidget = ({userId,picturePath,isProfile=false})=>{
     const [user, setUser] = useState(null);
     const [changeImg, setChangeImg] = useState(null);
-    const [successMsg, setSuccessMsg] = useState('');
-    const [errMsg, setErrMsg] = useState('');
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const token = useSelector((state)=> state.token);
@@ -62,7 +60,7 @@ const UserWidget = ({userId,picturePath,isProfile=false})=>{
             const responseData = await response.json();
             if(response.ok){
                 const {msg} = responseData;
-                setSuccessMsg(msg)
+                toast.success(msg)
                 const { user } = responseData;
                 dispatch(setProfileImage({ picturePath: user.picturePath}));
                 const { posts } = responseData;
@@ -70,11 +68,11 @@ const UserWidget = ({userId,picturePath,isProfile=false})=>{
                 navigate('/')
             }else{
                 const {msg} = responseData;
-                setErrMsg(msg);
+                toast.error(msg);
             }
         }catch(err){
             console.log(err.message);
-            setErrMsg(err.message);
+            toast.error(err.message);
         }
     }
 
@@ -99,12 +97,6 @@ const UserWidget = ({userId,picturePath,isProfile=false})=>{
     return (
         <WidgetWrapper>
             {/* First Row */}
-            {
-                errMsg && <ErrorMsg message={errMsg} severity='error'/>
-            }
-            {
-                successMsg && <ErrorMsg message={successMsg} severity='success'/>
-            }
             <FlexBetween 
                 gap="0.5rem"
                 pb="1.1rem"
