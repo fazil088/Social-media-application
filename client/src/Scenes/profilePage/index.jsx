@@ -35,7 +35,7 @@ function ProfilePage() {
 
   return (
     <Box>
-      <Navbar />
+      <Navbar/>
       <Box
         width='100%'
         padding='2rem 4%'

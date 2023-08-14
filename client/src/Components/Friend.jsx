@@ -1,4 +1,4 @@
-import {PersonAddOutlined,PersonRemoveOutlined} from '@mui/icons-material';
+import {ChatBubbleRounded, PersonAddOutlined,PersonRemoveOutlined} from '@mui/icons-material';
 import { Box,Typography,IconButton,useTheme } from '@mui/material';
 import { useDispatch,useSelector } from 'react-redux';
 import {useNavigate} from 'react-router-dom';
@@ -6,7 +6,7 @@ import FlexBetween from './FlexBetween';
 import UserImage from './UserImage';
 import { setFriends } from '../State';
 
-const Friend = ({ friendId, name, subtitle, userPicturePath, addFriend = true }) => {
+const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {_id} = useSelector((state) => state.user);
@@ -33,10 +33,6 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, addFriend = true })
         );
         const data = await response.json();
         dispatch(setFriends({friends: data}));
-    }
-
-    if(_id === friendId){
-        addFriend = false;
     }
 
     return (
@@ -69,7 +65,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, addFriend = true })
                     </Typography>
                 </Box>
             </FlexBetween>
-            { addFriend &&
+            { _id !== friendId &&
             <IconButton
                 onClick={patchFriend}
                 sx={{backgroundColor:primaryLight,p:'0.5rem'}}
@@ -81,7 +77,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, addFriend = true })
                         <PersonAddOutlined sx={{color:primaryDark}}/>
                     )
                 }
-            </IconButton>
+            </IconButton> 
             }
         </FlexBetween>
     )
