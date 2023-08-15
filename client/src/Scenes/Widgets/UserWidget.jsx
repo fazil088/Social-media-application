@@ -5,11 +5,10 @@ import {
     WorkOutlineOutlined,
     CameraAltOutlined
 } from '@mui/icons-material';
-import { Box,Typography,useTheme,Divider, Button } from '@mui/material';
+import { Box,Typography,useTheme,Divider, Button, IconButton } from '@mui/material';
 import UserImage from '../../Components/UserImage';
 import FlexBetween from '../../Components/FlexBetween';
 import WidgetWrapper from '../../Components/WidgetWrapper';
-import './Style.css';
 import {useSelector,useDispatch} from 'react-redux';
 import { useState,useEffect } from 'react';
 import {useNavigate} from 'react-router-dom';
@@ -121,10 +120,18 @@ const UserWidget = ({userId,picturePath,isProfile=false})=>{
                                 style={{
                                     position:'absolute',
                                     transform: 'scale(2)',
-                                    opacity:'0'
+                                    opacity:'0',
                                 }}
+                                
                             />
-                            <CameraAltOutlined/>
+                            <IconButton 
+                            sx={{
+                                cursor:'pointer',
+                                p:'0.1rem'
+                            }} 
+                            >
+                                <CameraAltOutlined/>
+                            </IconButton>
                         </Box>
                         }
                     </Box>

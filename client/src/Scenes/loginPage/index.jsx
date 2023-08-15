@@ -19,7 +19,7 @@ function LoginPage() {
       </Box>
       <Box display="flex" justifyContent="center" alignItems="center">
         <Box
-        width={isNonMobileScreen ? "50%" : "90%"}
+        width={isNonMobileScreen ? "40%" : "90%"}
         backgroundColor={theme.palette.background.alt}
         p="2rem"
         mt="2rem"

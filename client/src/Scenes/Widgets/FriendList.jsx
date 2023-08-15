@@ -4,8 +4,9 @@ import WidgetWrapper from '../../Components/WidgetWrapper';
 import { Box,Typography,useTheme } from '@mui/material';
 import Friend from '../../Components/Friend';
 import { setFriends } from '../../State';
+import ChatList from '../../Components/ChatList';
 
-function FriendList({userId}) {
+function FriendList({userId,isChat}) {
     const token = useSelector((state) => state.token);
     const friends = useSelector((state) => state.user.friends) || [];
     const dispatch = useDispatch();
@@ -32,7 +33,9 @@ function FriendList({userId}) {
   return (
     <WidgetWrapper>
         <Typography color={palette.neutral.dark} variant='h5' fontWeight='500' sx={{mb:"0.5rem"}} >
-            Friend List
+            {
+                isChat ? "Chat List" : "Friend List"
+            }
         </Typography>
         <Box
             display="flex" 
@@ -42,13 +45,15 @@ function FriendList({userId}) {
             {
                 friends && (
                 friends.map((friend,index) => (
-                   <Friend
-                    key={index}
-                    friendId={friend._id}
-                    name={`${friend.firstName} ${friend.lastName}`}
-                    subtitle={friend.occupation}
-                    userPicturePath={friend.picturePath}
-                   /> 
+                        <Friend
+                        key={index}
+                        friendId={friend._id}
+                        name={`${friend.firstName} ${friend.lastName}`}
+                        subtitle={friend.occupation}
+                        userPicturePath={friend.picturePath}
+                        isChat={isChat}
+                        /> 
+                   
                 ))
                 )
             }

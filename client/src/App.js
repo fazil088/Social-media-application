@@ -28,6 +28,7 @@ function App() {
             <Route exact path='/' element={isAuth ? <HomePage/> : <Navigate to="/login"/> } />
             <Route path='/profile/:userId' element={isAuth ? <ProfilePage/> : <Navigate to="/login"/>} />
             <Route path='/chat' element={isAuth ? <ChatPage/> : <Navigate to="/login"/>} />
+            <Route path='/chat-window/:userId' element={isAuth ? <ChatWidget/> : <Navigate to="/login" /> } />
           </Routes>
         </ThemeProvider>
         <ToastContainer
