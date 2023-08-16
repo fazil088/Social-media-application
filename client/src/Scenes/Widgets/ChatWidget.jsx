@@ -3,7 +3,6 @@ import { ArrowBackOutlined, SendOutlined } from '@mui/icons-material';
 import React, { useState, useEffect } from 'react'
 import WidgetWrapper from '../../Components/WidgetWrapper'
 import Navbar from '../Navbar';
-import FriendList from './FriendList';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import FlexBetween from '../../Components/FlexBetween';
@@ -14,7 +13,6 @@ function ChatWidget() {
   const [user, setUser] = useState(null);
   const isNonMobileScreen = useMediaQuery("(min-width:1000px)")
   const {palette} = useTheme();
-  const id = useSelector((state) => state.user._id)
   const {userId} = useParams();
   const token = useSelector((state) => state.token)
 
@@ -47,6 +45,7 @@ function ChatWidget() {
       gap='2rem'
       pt='100px'
       >
+        
         <WidgetWrapper
           height={isNonMobileScreen ? '82vh' : '85vh'}
           flexBasis={isNonMobileScreen ? '50%' : undefined}
@@ -54,7 +53,7 @@ function ChatWidget() {
           flexDirection='column'
         >
           {/* go back action in mobile screen */}
-          <Box flexBasis='5%'>
+        <Box flexBasis='2%'>
             <IconButton
             onClick={()=>{
               window.history.back();

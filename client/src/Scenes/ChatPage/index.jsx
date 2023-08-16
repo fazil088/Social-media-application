@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     Box,
+    IconButton,
     useMediaQuery
 } from '@mui/material';
 import {useSelector} from 'react-redux';
 import Navbar from '../Navbar';
-import ChatWidget from '../Widgets/ChatWidget';
-import { useNavigate } from 'react-router-dom';
 import FriendList from '../Widgets/FriendList';
+import { ArrowBackOutlined } from '@mui/icons-material';
 
 function ChatPage() {
     const id = useSelector((state) => state.user._id);
     const isNonMobileScreen = useMediaQuery("(min-width:1000px)");
-    const navigate = useNavigate();
     return (
         <Box>
             <Navbar/>
@@ -24,11 +23,21 @@ function ChatPage() {
             gap='2rem'
             pt='100px'
             >  
-               <Box 
-               flexBasis={isNonMobileScreen ? '30%' : undefined}
-               >
-                    <FriendList userId={id} isChat={true}/>
-               </Box>
+                {
+                    isNonMobileScreen &&
+                    <Box flexBasis='2%'>
+                        <IconButton
+                        onClick={()=>window.history.back()}
+                        >
+                            <ArrowBackOutlined sx={{fontSize:'25px'}}/>
+                        </IconButton>
+                    </Box>
+                }
+                <Box 
+                flexBasis={isNonMobileScreen ? '30%' : undefined}
+                >
+                        <FriendList userId={id} isChat={true}/>
+                </Box>
             </Box>
         </Box>
     )

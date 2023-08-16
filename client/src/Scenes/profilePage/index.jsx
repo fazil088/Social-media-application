@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react';
-import {Box, useMediaQuery} from '@mui/material';
+import {Box, IconButton, useMediaQuery} from '@mui/material';
 import {useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import UserWidget from '../Widgets/UserWidget';
@@ -7,6 +7,7 @@ import FriendList from '../Widgets/FriendList';
 import MyPostWidget from '../Widgets/MyPostWidget';
 import Navbar from '../Navbar';
 import PostsWidget from '../Widgets/PostsWidget';
+import { ArrowBackOutlined } from '@mui/icons-material';
 
 
 function ProfilePage() {
@@ -44,6 +45,16 @@ function ProfilePage() {
         gap='2rem'
         pt='100px'
       >
+        {
+          isNonMobileScreen && 
+          <Box flexBasis='2%'>
+            <IconButton
+            onClick={()=> window.history.back()}
+            >
+              <ArrowBackOutlined sx={{fontSize:'25px'}}/>
+            </IconButton>
+          </Box>
+        }
         <Box flexBasis={isNonMobileScreen ? '27%' : undefined}
         sx={isNonMobileScreen &&{
           display:'flex',
