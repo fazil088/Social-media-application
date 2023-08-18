@@ -1,4 +1,4 @@
-import { Box, IconButton, InputBase, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Box, Divider, IconButton, InputBase, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { ArrowBackOutlined, SendOutlined } from '@mui/icons-material';
 import React, { useState, useEffect } from 'react'
 import WidgetWrapper from '../../Components/WidgetWrapper'
@@ -90,7 +90,7 @@ function ChatWidget() {
               }
             </Typography>
           </Box>
-
+          <Divider sx={{mt:'0.5rem'}}/>
           {/* Messages shows */}
 
           <Box
