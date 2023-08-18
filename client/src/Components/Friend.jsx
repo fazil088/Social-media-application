@@ -36,7 +36,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath,isChat=false }) => {
     }
 
     return (
-        <FlexBetween>
+        <FlexBetween gap='2rem'>
             <FlexBetween gap='1rem'>
                 <UserImage profilePicture={userPicturePath} size='55px'/>
                 <Box
@@ -67,7 +67,10 @@ const Friend = ({ friendId, name, subtitle, userPicturePath,isChat=false }) => {
                 </Box>
             </FlexBetween>
             {
-            isChat ? <ChatBubbleOutlineOutlined/> :
+            isChat ? 
+            <IconButton>
+                <ChatBubbleOutlineOutlined/>
+            </IconButton> :
                 _id !== friendId &&
                 <IconButton
                 onClick={patchFriend}

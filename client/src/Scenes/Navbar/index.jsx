@@ -42,7 +42,7 @@ function Navbar() {
   const neutralLight = theme.palette.neutral.light;
   const dark = theme.palette.neutral.dark;
   const background = theme.palette.background.default;
-  const primaryLight = theme.palette.primary.light;
+  // const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
 
   const fullName = `${user.firstName} ${user.lastName}`;
@@ -96,14 +96,8 @@ function Navbar() {
         <Typography
           fontWeight="bold"
           fontSize="clamp(1rem, 1.5rem, 2.25rem)"
-          onClick={() => navigate('/')}
           color={theme.palette.primary.main}
-          sx={{
-            "&:hover": {
-              color: primaryLight,
-              cursor:'pointer',
-            },
-          }}
+          sx={{cursor:'default'}}
         >
           Connect
         </Typography>
@@ -148,7 +142,7 @@ function Navbar() {
               >
                {
                 searchedUser.map((user, index)=> (
-                    <Box key={index} p='0.5rem 4rem 0.5rem 1rem' >
+                    <Box key={index} p='0.5rem 2rem 0.5rem 1rem' >
                       <Friend
                         friendId={user._id} 
                         name={`${user.firstName} ${user.lastName}`}
