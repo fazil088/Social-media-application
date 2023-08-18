@@ -99,7 +99,7 @@ function Navbar() {
           color={theme.palette.primary.main}
           sx={{cursor:'default'}}
         >
-          Connect
+         Connect
         </Typography>
         {
           nonMobileScreens && (

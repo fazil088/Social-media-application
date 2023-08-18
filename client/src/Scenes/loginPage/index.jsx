@@ -13,8 +13,8 @@ function LoginPage() {
         padding="1rem 5%"
         textAlign="center"
         backgroundColor= {theme.palette.background.alt}>
-        <Typography fontWeight="bold" fontSize="32px" color="primary">
-          Connect
+        <Typography fontWeight="bold" fontSize="26px" color="primary">
+          <img src="../assets/App-Logo.png" alt="" /> Connect
         </Typography>
       </Box>
       <Box display="flex" justifyContent="center" alignItems="center">
