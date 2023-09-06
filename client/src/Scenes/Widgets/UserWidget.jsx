@@ -121,17 +121,9 @@ const UserWidget = ({userId,picturePath,isProfile=false})=>{
                                     position:'absolute',
                                     transform: 'scale(2)',
                                     opacity:'0',
-                                }}
-                                
+                                }}   
                             />
-                            <IconButton 
-                            sx={{
-                                cursor:'pointer',
-                                p:'0.1rem'
-                            }} 
-                            >
-                                <CameraAltOutlined/>
-                            </IconButton>
+                            <CameraAltOutlined sx={{p:'0.1rem'}}/>
                         </Box>
                         }
                     </Box>
